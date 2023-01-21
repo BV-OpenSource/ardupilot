@@ -27,6 +27,7 @@
 #include "AP_Proximity_AirSimSITL.h"
 #include "AP_Proximity_Cygbot_D1.h"
 #include "AP_Proximity_DroneCAN.h"
+#include "AP_Proximity_NanoradarMR72.h"
 
 #include <AP_Logger/AP_Logger.h>
 
@@ -186,6 +187,14 @@ void AP_Proximity::init()
         case  Type::DroneCAN:
             num_instances = instance+1;
         break;
+
+        case Type::NanoRadarMR72:
+            if (AP_Proximity_NanoradarMR72::detect(serial_instance)) {
+                state[instance].instance = instance;
+                drivers[instance] = new AP_Proximity_NanoradarMR72(*this, state[instance], params[instance], serial_instance);
+                serial_instance++;
+            }
+            break;
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
         case Type::SITL:

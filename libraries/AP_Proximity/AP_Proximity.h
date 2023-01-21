@@ -61,6 +61,7 @@ public:
 #endif
         CYGBOT_D1 = 13,
         DroneCAN = 14,
+        NanoRadarMR72 = 15,
     };
 
     enum class Status {
