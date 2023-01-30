@@ -63,6 +63,8 @@ void AP_RangeFinder_Backend::update_status()
     } else {
         set_status(RangeFinder::Status::Good);
     }
+
+    state.distance_m = correct_distance_for_angle(state.distance_m);
 }
 
 // set status and update valid count
@@ -80,3 +82,7 @@ void AP_RangeFinder_Backend::set_status(RangeFinder::Status _status)
     }
 }
 
+float AP_RangeFinder_Backend::correct_distance_for_angle(float distance)
+{ 
+    return distance*cos(M_PI/180.0f*params.angle_correction); 
+};

@@ -18,6 +18,7 @@ public:
     AP_Int16 powersave_range;
     AP_Int16 min_distance_cm;
     AP_Int16 max_distance_cm;
+    AP_Int16 angle_correction; // angle correction from orientation in degrees
     AP_Int8  type;
     AP_Int8  pin;
     AP_Int8  ratiometric;

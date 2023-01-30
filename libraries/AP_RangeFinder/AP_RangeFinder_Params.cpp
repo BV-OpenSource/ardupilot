@@ -138,6 +138,14 @@ const AP_Param::GroupInfo AP_RangeFinder_Params::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("ORIENT", 53, AP_RangeFinder_Params, orientation, AP_RANGEFINDER_DEFAULT_ORIENTATION),
 
+    // @Param: ANG_CORR
+    // @DisplayName: Rangefinder angle correction
+    // @Description: Rangefinder sensor angle correction from orientation in degrees
+    // @Units: deg
+    // @Range: -90 90
+    // @User: Standard
+    AP_GROUPINFO("ANG_CORR", 54, AP_RangeFinder_Params, angle_correction, 0),
+
     AP_GROUPEND
 };
 

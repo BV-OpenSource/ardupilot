@@ -81,6 +81,9 @@ protected:
     // set status and update valid_count
     void set_status(RangeFinder::Status status);
 
+    // correct an orientation angle (in degrees)
+    float correct_distance_for_angle(float distance);
+
     RangeFinder::RangeFinder_State &state;
     AP_RangeFinder_Params &params;
 
