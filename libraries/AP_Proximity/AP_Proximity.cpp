@@ -28,6 +28,7 @@
 #include "AP_Proximity_Cygbot_D1.h"
 #include "AP_Proximity_DroneCAN.h"
 #include "AP_Proximity_NanoradarMR72.h"
+#include "AP_Proximity_AWR1843_CAN.h"
 
 #include <AP_Logger/AP_Logger.h>
 
@@ -194,6 +195,14 @@ void AP_Proximity::init()
                 drivers[instance] = new AP_Proximity_NanoradarMR72(*this, state[instance], params[instance], serial_instance);
                 serial_instance++;
             }
+            break;
+        
+        case Type::AWR1843_CAN:
+            // if (AP_Proximity_AWR1843_CAN::detect(serial_instance)) {
+                state[instance].instance = instance;
+                drivers[instance] = new AP_Proximity_AWR1843_CAN(*this, state[instance], params[instance]);
+                // serial_instance++;
+            // }
             break;
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL

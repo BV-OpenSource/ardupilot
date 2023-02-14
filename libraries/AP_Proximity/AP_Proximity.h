@@ -62,6 +62,7 @@ public:
         CYGBOT_D1 = 13,
         DroneCAN = 14,
         NanoRadarMR72 = 15,
+        AWR1843_CAN = 16,
     };
 
     enum class Status {

@@ -21,6 +21,8 @@
 
 #include <AP_Scheduler/AP_Scheduler.h>
 #include "AP_CANSensor.h"
+#include <GCS_MAVLink/GCS.h>
+
 
 extern const AP_HAL::HAL& hal;
 
@@ -166,12 +168,18 @@ void CANSensor::loop()
         bool read_select = true;
         bool write_select = false;
         bool ret = _can_iface->select(read_select, write_select, nullptr, timeout);
+        // gcs().send_text(MAV_SEVERITY_INFO, "RangeFinder try");
+        // if(read_select) {
+        //     gcs().send_text(MAV_SEVERITY_INFO, "RangeFinder read");
+        // }
         if (ret && read_select) {
             uint64_t time;
             AP_HAL::CANIface::CanIOFlags flags {};
 
             AP_HAL::CANFrame frame;
             int16_t res = _can_iface->receive(frame, time, flags);
+
+            // gcs().send_text(MAV_SEVERITY_INFO, "RangeFinder got reading %u with %u and %u", unsigned(frame.isCanFDFrame()), unsigned(frame.data[0]), unsigned(frame.data[20]));
 
             if (res == 1) {
                 handle_frame(frame);
