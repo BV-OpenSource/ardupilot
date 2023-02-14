@@ -4,8 +4,7 @@
 #include <AP_CANManager/AP_CANSensor.h>
 
 #if HAL_PROXIMITY_ENABLED
-#define NRMR72_TIMEOUT_MS            300                               // requests timeout after 0.3 seconds
-#define NRMR72_BUFFER_SIZE  14
+#define AWR1843_TIMEOUT_MS            500                               // requests timeout after 0.3 seconds
 
 class AP_Proximity_AWR1843_CAN : public CANSensor, public AP_Proximity_Backend
 {
@@ -27,17 +26,6 @@ public:
 
 private:
     uint8_t magic_word[8] = {0x02, 0x01, 0x04, 0x03, 0x06, 0x05, 0x08, 0x07};
-    uint8_t tlv_type;
-    // uint8_t parser_state;
-
-    uint8_t *buffer_read;
-    uint16_t buffer_bytes_used;
-    uint16_t buffer_read_alloc_size;
-
-    std::vector<uint8_t> buf_read;
-    uint32_t expected_bytes_total;
-    uint32_t expected_bytes_payload;
-
 
     enum ParserState {
         READ_MAGIC_WORD = 0,
@@ -123,28 +111,14 @@ private:
     };
 
     ParserState parser_state;
+    std::vector<uint8_t> buf_read;
 
-    class Message {
-        public:
-            static const uint16_t HEADER = 0xAAAA;
-            static const uint16_t END = 0x5555;
-            static const uint16_t TYPE_SENSOR_STATUS = 0x060A;
-            static const uint16_t TYPE_TARGET_STATUS = 0x070B;
-            static const uint16_t TYPE_TARGET_READING = 0x070C;
-    };
-    
     // check and process replies from sensor
-    bool read_sensor_data();
     void update_sector_data(float azimuth_deg, float elevation_deg, float distance_m);
     int16_t find_magic_word(std::vector<uint8_t> *data, uint8_t added_bytes);
     void sync_buffer(std::vector<uint8_t> *data, int16_t n_pos);
 
-    uint32_t uint32_from_bytes_LE(uint8_t *byte_array);
-
     // reply related variables
-    uint8_t buffer[NRMR72_BUFFER_SIZE]; // buffer where to store data from serial
-    uint8_t buffer_count;
-
     MessageHeader packet_header;
     TLV tlv_read;
     DetectedObj detected_obj_read;
